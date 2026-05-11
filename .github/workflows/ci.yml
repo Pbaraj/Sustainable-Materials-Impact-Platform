@@ -14,6 +14,35 @@ jobs:
     name: Backend Check
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: material_user
+          POSTGRES_PASSWORD: material_password
+          POSTGRES_DB: material_impact_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U material_user -d material_impact_db"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: postgresql://material_user:material_password@localhost:5432/material_impact_db
+      REDIS_URL: redis://localhost:6379/0
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
