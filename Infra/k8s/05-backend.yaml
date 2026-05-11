@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: material-impact-backend
+  template:
+    metadata:
+      labels:
+        app: material-impact-backend
+    spec:
+      containers:
+        - name: backend
+          image: material-impact-backend:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: material-impact-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+    app: material-impact-backend
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 30080

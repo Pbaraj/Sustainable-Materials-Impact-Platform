@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: material-impact-config
+data:
+  DATABASE_URL: postgresql://material_user:material_password@postgres-service:5432/material_impact_db
+  REDIS_URL: redis://redis-service:6379/0
