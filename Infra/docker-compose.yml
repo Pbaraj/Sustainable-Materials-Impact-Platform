@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: material-impact-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: material_user
+      POSTGRES_PASSWORD: material_password
+      POSTGRES_DB: material_impact_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U material_user -d material_impact_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: material-impact-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ../Backend
+    container_name: material-impact-backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://material_user:material_password@postgres:5432/material_impact_db
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../Frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    container_name: material-impact-frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
