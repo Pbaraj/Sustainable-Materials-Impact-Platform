@@ -1,0 +1,6 @@
+name: sustainable-materials-impact-platform
+title: Sustainable Materials Impact Platform
+version: '1.0'
+
+nav:
+  - modules/ROOT/nav.adoc
