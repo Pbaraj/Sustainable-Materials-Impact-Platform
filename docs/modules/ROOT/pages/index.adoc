@@ -1,0 +1,94 @@
+= Sustainable Materials Impact Platform
+
+The Sustainable Materials Impact Platform is a cloud-native full-stack application for estimating and comparing the embodied carbon impact of construction materials.
+
+The platform combines civil engineering, sustainability assessment, and modern software engineering. Users can enter material quantities, calculate simplified carbon impacts, save assessments, and view sustainability results through a dashboard.
+
+[NOTE]
+====
+The emission factors used in this project are generic demonstration values.
+
+They are not official verified Environmental Product Declaration (EPD) or ÖKOBAUDAT values.
+====
+
+== Main Features
+
+* Calculate embodied carbon for construction materials
+* Compare concrete, steel, timber, brick, glass, and insulation
+* Display total CO₂e impact
+* Generate a sustainability score
+* Classify the material impact level
+* Display material-wise impacts using charts
+* Show traceable calculation formulas
+* Save assessment history in PostgreSQL
+* Cache dashboard summaries using Redis
+* Run the application using Docker Compose
+* Deploy the application to local Kubernetes
+* Provide a Terraform and OpenTofu structure for future cloud deployment
+
+== Technology Stack
+
+=== Frontend
+
+* React
+* TypeScript
+* Vite
+* Axios
+* Recharts
+
+=== Backend
+
+* Python
+* FastAPI
+* Pydantic
+
+=== Data Services
+
+* PostgreSQL
+* Redis
+
+=== DevOps and Infrastructure
+
+* Docker
+* Docker Compose
+* Kubernetes
+* Terraform
+* OpenTofu
+* GitHub Actions
+
+== Architecture
+
+The platform follows this general architecture:
+
+[source,text]
+----
+React and TypeScript frontend
+              |
+              v
+       FastAPI backend
+              |
+              v
+      PostgreSQL database
+              |
+              v
+         Redis cache
+              |
+              v
+      Docker or Kubernetes
+----
+
+== Typical Workflow
+
+. Enter a construction material and its quantity.
+. Submit the assessment through the frontend.
+. Send the data to the FastAPI backend.
+. Calculate the simplified CO₂e impact.
+. Store the assessment in PostgreSQL.
+. Update or retrieve dashboard summaries through Redis.
+. Display results, scores, and charts in the frontend.
+
+== Project Purpose
+
+This project demonstrates how sustainability calculations can be integrated into a modern full-stack platform.
+
+It also demonstrates containerization, database integration, caching, automated workflows, Kubernetes deployment, and infrastructure-as-code concepts.
