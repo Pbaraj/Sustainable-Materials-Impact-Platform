@@ -1,0 +1,207 @@
+= Installation and Setup
+
+== Recommended Method: Docker Compose
+
+The easiest way to run the complete platform is with Docker Compose.
+
+This starts:
+
+* PostgreSQL
+* Redis
+* FastAPI backend
+* React frontend
+
+== Prerequisites
+
+Install the following software:
+
+* Git
+* Docker Desktop
+* Docker Compose
+
+Make sure Docker Desktop is running before continuing.
+
+== Clone the Repository
+
+Open PowerShell and run:
+
+[source,powershell]
+----
+git clone https://github.com/Pbaraj/Sustainable-Materials-Impact-Platform.git
+cd Sustainable-Materials-Impact-Platform
+----
+
+== Start the Complete Application
+
+The Docker Compose file is located inside the `Infra` directory.
+
+Navigate to it:
+
+[source,powershell]
+----
+cd Infra
+----
+
+Build and start all services:
+
+[source,powershell]
+----
+docker compose up --build
+----
+
+The first build may take several minutes because Docker must download the
+required images and install the project dependencies.
+
+== Open the Application
+
+After all containers have started, open the frontend:
+
+[source,text]
+----
+http://localhost:5173
+----
+
+The backend API is available at:
+
+[source,text]
+----
+http://localhost:8000
+----
+
+The FastAPI documentation is available at:
+
+[source,text]
+----
+http://localhost:8000/docs
+----
+
+== Running Services
+
+Docker Compose starts the following services:
+
+[cols="1,1,1"]
+|===
+|Service |Container port |Local port
+
+|Frontend
+|80
+|5173
+
+|Backend
+|8000
+|8000
+
+|PostgreSQL
+|5432
+|5432
+
+|Redis
+|6379
+|6379
+|===
+
+== Stop the Application
+
+Return to the PowerShell terminal running Docker Compose and press:
+
+[source,text]
+----
+Ctrl+C
+----
+
+Then remove the running containers:
+
+[source,powershell]
+----
+docker compose down
+----
+
+== Start the Application Again
+
+From the `Infra` directory, run:
+
+[source,powershell]
+----
+docker compose up
+----
+
+Use `--build` again when the application source code or Docker configuration
+has changed:
+
+[source,powershell]
+----
+docker compose up --build
+----
+
+== Remove Stored Database Data
+
+The PostgreSQL database is stored in a Docker volume.
+
+To remove the containers and stored database volume, run:
+
+[source,powershell]
+----
+docker compose down -v
+----
+
+[WARNING]
+====
+The `-v` option deletes the stored PostgreSQL data created by the application.
+Use it only when you intentionally want a fresh database.
+====
+
+== Local Frontend Development
+
+To run only the frontend locally, open a new PowerShell terminal from the
+repository root:
+
+[source,powershell]
+----
+cd Frontend
+npm install
+npm run dev
+----
+
+The frontend development server normally opens at:
+
+[source,text]
+----
+http://localhost:5173
+----
+
+The backend and supporting database services must also be available for the
+complete application to function.
+
+== Local Backend Development
+
+From the repository root, navigate to the backend:
+
+[source,powershell]
+----
+cd Backend
+----
+
+Create and activate a Python virtual environment:
+
+[source,powershell]
+----
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+----
+
+Install the dependencies:
+
+[source,powershell]
+----
+pip install -r requirements.txt
+----
+
+Start the FastAPI backend:
+
+[source,powershell]
+----
+uvicorn app.main:app --reload
+----
+
+For the simplest complete setup, Docker Compose is recommended because it
+automatically provides PostgreSQL, Redis, the backend, and the frontend.
